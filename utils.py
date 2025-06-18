@@ -12,6 +12,7 @@ class AccountLoginRequest(BaseModel):
 
 class OrderSendRequest(BaseModel):
     symbol: str
+    type: str
     lot: float
     sl: Optional[float | None] = None
     tp: Optional[float | None] = None
