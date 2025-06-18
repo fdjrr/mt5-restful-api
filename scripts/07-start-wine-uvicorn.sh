@@ -2,12 +2,12 @@
 
 source /scripts/02-common.sh
 
-log_message "RUNNING" "06-start-wine-uvicorn.sh"
+log_message "RUNNING" "07-start-wine-uvicorn.sh"
 
 log_message "INFO" "Starting Uvicorn server in Wine environment..."
 
 # Run the Uvicorn app using Wine's Python
-wine python -m uvicorn /app/main:app --host 0.0.0.0 --port 8000 &
+wine python -m uvicorn /app/main:app --host 0.0.0.0 --port 5000 &
 
 UVICORN_PID=$!
 

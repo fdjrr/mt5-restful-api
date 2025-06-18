@@ -1,7 +1,14 @@
 services:
   app:
     build: .
+    container_name: mt5_restful_api
     ports:
-      - "8000:8000"
-    env_file:
-      - .env
+      - "5000:5000"
+    volumes:
+      - ./config:/config
+    networks:
+      - homelabs
+
+networks:
+  homelabs:
+    driver: bridge
