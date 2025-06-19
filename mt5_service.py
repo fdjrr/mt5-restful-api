@@ -3,7 +3,6 @@ from typing import Optional
 
 import MetaTrader5 as mt5
 import pandas as pd
-import pytz
 
 from utils import OrderSendRequest, order_type_match
 
@@ -89,16 +88,14 @@ def get_copy_rates_from(
     authorized = mt5.login(id, password=password, server=server)
 
     if authorized:
-        timezone = pytz.timezone("Etc/UTC")
+        date_from = datetime.strptime(date_from, "%Y-%m-%d")
 
-        utc_from = datetime.strptime(date_from, "%Y-%m-%d").replace(tzinfo=timezone)
-
-        rates = mt5.copy_rates_from(symbol, timeframe, utc_from, count)
+        rates = mt5.copy_rates_from(symbol, timeframe, date_from, count)
 
         mt5.shutdown()
 
         if rates is not None and len(rates) > 0:
-            df = pd.DataFrame(list(rates), columns=rates[0]._asdict().keys())
+            df = pd.DataFrame(rates)
 
             rates = df.to_dict(orient="records")
 
@@ -161,12 +158,10 @@ def get_copy_rates_range(
     authorized = mt5.login(id, password=password, server=server)
 
     if authorized:
-        timezone = pytz.timezone("Etc/UTC")
+        date_from = datetime.strptime(date_from, "%Y-%m-%d")
+        date_to = datetime.strptime(date_to, "%Y-%m-%d")
 
-        utc_from = datetime.strptime(date_from, "%Y-%m-%d").replace(tzinfo=timezone)
-        utc_to = datetime.strptime(date_to, "%Y-%m-%d").replace(tzinfo=timezone)
-
-        rates = mt5.copy_rates_range(symbol, timeframe, utc_from, utc_to)
+        rates = mt5.copy_rates_range(symbol, timeframe, date_from, date_to)
 
         mt5.shutdown()
 
